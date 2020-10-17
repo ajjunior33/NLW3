@@ -6,7 +6,7 @@ export default {
   async index(request: Request, response: Response) {
     try {
       const orphanagesRepository = getRepository(Orphanages);
-      const orphanages = await orphanagesRepository.find();
+      const orphanages = await orphanagesRepository.find({relations: ['images']});
       return response.json(orphanages);
     } catch (err) {
       return response.status(400).json({
@@ -18,7 +18,7 @@ export default {
     try {
       const { id } = request.params;
       const orphanagesRepository = getRepository(Orphanages);
-      const orphanages = await orphanagesRepository.findOneOrFail(id);
+      const orphanages = await orphanagesRepository.findOneOrFail(id, {relations: ['images']});
       return response.json(orphanages);
     } catch (err) {
       return response.status(400).json({
