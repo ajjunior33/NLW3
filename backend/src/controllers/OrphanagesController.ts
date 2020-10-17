@@ -2,12 +2,17 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 
 import Orphanages from "../models/Orphanage";
+import orphanageView from "../views/Orphanages_view";
+
 export default {
   async index(request: Request, response: Response) {
     try {
       const orphanagesRepository = getRepository(Orphanages);
-      const orphanages = await orphanagesRepository.find({relations: ['images']});
-      return response.json(orphanages);
+      const orphanages = await orphanagesRepository.find({
+        relations: ["images"],
+      });
+      
+      return response.json(orphanageView.renderMany(orphanages));
     } catch (err) {
       return response.status(400).json({
         message: "Houve um erro ao usar a rota",
@@ -18,8 +23,10 @@ export default {
     try {
       const { id } = request.params;
       const orphanagesRepository = getRepository(Orphanages);
-      const orphanages = await orphanagesRepository.findOneOrFail(id, {relations: ['images']});
-      return response.json(orphanages);
+      const orphanage = await orphanagesRepository.findOneOrFail(id, {
+        relations: ["images"],
+      });
+      return response.json(orphanageView.render(orphanage));
     } catch (err) {
       return response.status(400).json({
         message: "Houve um erro ao usar a rota",
