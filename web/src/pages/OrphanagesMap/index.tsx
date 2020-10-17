@@ -9,13 +9,9 @@ import "leaflet/dist/leaflet.css";
 // files
 import "../../styles/pages/orphanagesMap.css";
 import mapMarkerImg from "../../images/map-marker.svg";
+import mapIcon from "../../utils/mapIcon";
 
-const mapIcon = Leaflet.icon({
-  iconUrl: mapMarkerImg,
-  iconSize: [50, 56],
-  iconAnchor: [25, 56],
-  popupAnchor: [170, 2],
-});
+;
 
 function OrphanagesMap() {
   return (
