@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import mapMarker from "../images/map-marker.png";
 
@@ -20,14 +20,13 @@ function OrphanagesMap() {
 
   const [orphanages, setOrphanages] = useState<Orphanage[]>([]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     api.get("/orphanages").then((response) => {
       const { data } = response;
 
       setOrphanages(data);
     });
-  }, []);
-
+  });
   function handleNavigateToOrphanageDetails(id) {
     navigation.navigate("OrphanagesDetails", { id });
   }
@@ -61,7 +60,10 @@ function OrphanagesMap() {
                 longitude: orphanage.longitude,
               }}
             >
-              <Callout tooltip onPress={() => handleNavigateToOrphanageDetails(orphanage.id)}>
+              <Callout
+                tooltip
+                onPress={() => handleNavigateToOrphanageDetails(orphanage.id)}
+              >
                 <View style={styles.calloutContainer}>
                   <Text style={styles.calloutText}>{orphanage.name}</Text>
                 </View>
@@ -71,7 +73,9 @@ function OrphanagesMap() {
         })}
       </MapView>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>{orphanages.length} orfanatos encontrados</Text>
+        <Text style={styles.footerText}>
+          {orphanages.length} orfanatos encontrados
+        </Text>
 
         <RectButton
           onPress={handleNavigateToCreateOrphanage}
